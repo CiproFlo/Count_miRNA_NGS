@@ -6,18 +6,18 @@ use autodie;
 #use Data::Dumper; $Data::Dumper::Sortkeys = 1;
 system("clear");
 use POSIX qw/strftime/;
-$| = 1;												## Turn on autoflush
+$| = 1; ## Turn on autoflush
 
 ####### User input #######
 
-my $path_to_file		  = "";
-my $fastq_file            = $path_to_file."34a_ctxt_199a_ctxt.fq_output2.fastq";
+my $path_to_file = "";
+my $fastq_file   = $path_to_file."34a_ctxt_199a_ctxt.fq_output2.fastq";
 
-my %mirnas = (										    ## All miRNAs are shortened at both end for 2 nt for searching
-	"hsa-miR-34a-5p"  => "AGTGTCTTAGCTGG", 				## "TGGCAGTGTCTTAGCTGGTTGT", 
-	"hsa-miR-34a-3p"  => "CAGCAAGTATACTG", 				## "CAATCAGCAAGTATACTGCCCT",
-	"hsa-miR-199a-5p" => "GTGTTCAGACTACCT", 			## "CCCAGTGTTCAGACTACCTGTTC", 
-	"hsa-miR-199a-3p" => "TAGTCTGCACATTG",				## "ACAGTAGTCTGCACATTGGTTA",
+my %mirnas = (						## All miRNAs are shortened at both end for 2 nt for searching
+	"hsa-miR-34a-5p"  => "AGTGTCTTAGCTGG", 		## "TGGCAGTGTCTTAGCTGGTTGT", 
+	"hsa-miR-34a-3p"  => "CAGCAAGTATACTG", 		## "CAATCAGCAAGTATACTGCCCT",
+	"hsa-miR-199a-5p" => "GTGTTCAGACTACCT", 	## "CCCAGTGTTCAGACTACCTGTTC", 
+	"hsa-miR-199a-3p" => "TAGTCTGCACATTG",		## "ACAGTAGTCTGCACATTGGTTA",
 );						  
 
 ##########################
@@ -29,6 +29,7 @@ my %mirnas = (										    ## All miRNAs are shortened at both end for 2 nt for
 # sequence line
 # +optional repeat of title line
 # quality line
+#
 #
 # EXAMPLE:
 #
@@ -57,12 +58,12 @@ while (<FASTQ_FILE>){
 		$line_counter = 0;
 		search_mirnas($current_identifier, $current_sequence);
 	}
-	if ( $read_lines%4000000 == 0 ) {									 	## Info all 1 Mio sequecnes read
+	if ( $read_lines%4000000 == 0 ) {				## Info all 1 Mio sequecnes read
 		print strftime "[%d.%m.%Y - %H:%M:%S]\t", localtime();
 		printf "%d sequences analyzed.\n", ($read_lines/4) 
 	}
 	++$read_lines;
-    #last if $read_lines == 100000;                                                    ## Remove in final run!!!!
+    #last if $read_lines == 100000;                                     ## Remove in final run!!!!
 }
 close FASTQ_FILE;
 
